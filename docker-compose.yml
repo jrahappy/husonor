@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    container_name: husonor-backend
+    environment:
+      - DATABASE_URL=sqlite:////data/husonor.db
+      - CORS_ORIGINS=http://localhost,http://localhost:80
+    volumes:
+      - db-data:/data
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: husonor-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  db-data:
